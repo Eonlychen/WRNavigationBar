@@ -267,17 +267,31 @@
 + (int)navBarBottom {
     return 44 + CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
 }
+//+ (BOOL)isIphoneX {
+//    struct utsname systemInfo;
+//    uname(&systemInfo);
+//    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];
+//    if ([platform isEqualToString:@"i386"] || [platform isEqualToString:@"x86_64"]) {
+//        // judgment by height when in simulators
+//        return (CGSizeEqualToSize([UIScreen mainScreen].bounds.size, CGSizeMake(375, 812)) ||
+//                CGSizeEqualToSize([UIScreen mainScreen].bounds.size, CGSizeMake(812, 375)));
+//    }
+//    BOOL isIPhoneX = [platform isEqualToString:@"iPhone10,3"] || [platform isEqualToString:@"iPhone10,6"];
+//    return isIPhoneX;
+//}
+
 + (BOOL)isIphoneX {
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];
-    if ([platform isEqualToString:@"i386"] || [platform isEqualToString:@"x86_64"]) {
-        // judgment by height when in simulators
-        return (CGSizeEqualToSize([UIScreen mainScreen].bounds.size, CGSizeMake(375, 812)) ||
-                CGSizeEqualToSize([UIScreen mainScreen].bounds.size, CGSizeMake(812, 375)));
+    // 先判断当前设备是否为 iPhone 或 iPod touch
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        // 获取屏幕的宽度和高度，取较大一方判断是否为 812.0 或 896.0
+        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+        CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+        CGFloat maxLength = screenWidth > screenHeight ? screenWidth : screenHeight;
+        if (maxLength == 812.0f || maxLength == 896.0f) {
+            return YES;
+        }
     }
-    BOOL isIPhoneX = [platform isEqualToString:@"iPhone10,3"] || [platform isEqualToString:@"iPhone10,6"];
-    return isIPhoneX;
+    return NO;
 }
 
 @end
