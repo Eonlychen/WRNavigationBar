@@ -242,6 +242,24 @@ static char kWRBackgroundImageKey;
     self.backgroundImageView.image = image;
 }
 
+- (void)insertSubview:(UIView *)view atIndex:(NSInteger)index {
+    
+    [super insertSubview:view atIndex:index];
+    
+    if ([view isKindOfClass:NSClassFromString(@"_UIBarBackground")]) {
+        
+        if (![view.subviews containsObject:self.backgroundView]) {
+            
+            [view insertSubview:self.backgroundView atIndex:0];
+            
+//            [self.backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.edges.equalTo(view);
+//            }];
+    
+        }
+    }
+}
+
 // set navigationBar barTintColor
 - (void)wr_setBackgroundColor:(UIColor *)color {
     [self.backgroundImageView removeFromSuperview];
