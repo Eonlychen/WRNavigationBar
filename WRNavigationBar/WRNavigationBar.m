@@ -258,7 +258,23 @@ static char kWRBackgroundImageKey;
     }
     self.backgroundView.backgroundColor = color;
 }
-
+- (void)insertSubview:(UIView *)view atIndex:(NSInteger)index {
+    
+    [super insertSubview:view atIndex:index];
+    
+    if ([view isKindOfClass:NSClassFromString(@"_UIBarBackground")]) {
+        
+        if (![view.subviews containsObject:self.backgroundView]) {
+            
+            [view insertSubview:self.backgroundView atIndex:0];
+            
+//            [self.backgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.edges.equalTo(view);
+//            }];
+    
+        }
+    }
+}
 - (void)wr_keyboardDidShow {
     [self wr_restoreUIBarBackgroundFrame];
 }
